@@ -99,7 +99,7 @@ Main._hx_class = Main
 
 class Reflect:
 	_hx_class_name = "Reflect"
-	_hx_statics = ["field", "callMethod", "isFunction", "isObject", "deleteField"]
+	_hx_statics = ["field", "callMethod", "isFunction", "compare", "isObject", "deleteField"]
 
 	@staticmethod
 	def field(o,field):
@@ -115,6 +115,21 @@ class Reflect:
 	@staticmethod
 	def isFunction(f):
 		return ((python_lib_Inspect.isfunction(f) or python_lib_Inspect.ismethod(f)) or hasattr(f,"func_code"))
+
+	@staticmethod
+	def compare(a,b):
+		if ((a is None) and ((b is None))):
+			return 0
+		if (a is None):
+			return 1
+		elif (b is None):
+			return -1
+		elif (a == b):
+			return 0
+		elif (a > b):
+			return 1
+		else:
+			return -1
 
 	@staticmethod
 	def isObject(v):
@@ -554,55 +569,62 @@ class Sutl:
 			elif hasattr(scope13,(("_hx_" + "false") if ("false" in python_Boot.keywords) else (("_hx_" + "false") if (((((len("false") > 2) and ((ord("false"[0]) == 95))) and ((ord("false"[1]) == 95))) and ((ord("false"[(len("false") - 1)]) != 95)))) else "false"))):
 				retval = _g._evaluate(parentscope13,Util.get(scope13,"false"),l13,src13,tt13,b13,h13)
 			return retval
-		def _hx_local_14(parentscope14,scope14,l14,src14,tt14,b14,h14):
+		def _hx_local_15(parentscope14,scope14,l14,src14,tt14,b14,h14):
 			obj = Util.get(scope14,"map")
 			if Util.isObject(obj):
-				return python_Boot.fields(obj)
+				retval1 = python_Boot.fields(obj)
+				def _hx_local_14(a1,b15):
+					return Reflect.compare(a1,b15)
+				retval1.sort(key= python_lib_Functools.cmp_to_key(_hx_local_14))
+				return retval1
 			else:
 				return None
-		def _hx_local_16(parentscope15,scope15,l15,src15,tt15,b15,h15):
+		def _hx_local_18(parentscope15,scope15,l15,src15,tt15,b16,h15):
 			obj1 = Util.get(scope15,"map")
 			if Util.isObject(obj1):
-				vals = None
-				_this = python_Boot.fields(obj1)
-				def _hx_local_15(key):
+				keys = python_Boot.fields(obj1)
+				def _hx_local_16(a2,b17):
+					return Reflect.compare(a2,b17)
+				Reflect.field(keys,"sort")(_hx_local_16)
+				def _hx_local_17(key):
 					return Util.get(obj1,key)
-				vals = list(map(_hx_local_15,_this))
+				vals = Reflect.field(keys,"map")(_hx_local_17)
 				return vals
 			else:
 				return None
-		def _hx_local_17(parentscope16,scope16,l16,src16,tt16,b16,h16):
+		def _hx_local_19(parentscope16,scope16,l16,src16,tt16,b18,h16):
 			item = Util.get(scope16,"list",Util.get(scope16,"value"))
 			if Util.isSequence(item):
-				return item.length
+				arr = Util.SequenceToArray(item)
+				return len(arr)
 			else:
 				return 0
-		def _hx_local_18(parentscope17,scope17,l17,src17,tt17,b17,h17):
+		def _hx_local_20(parentscope17,scope17,l17,src17,tt17,b19,h17):
 			item1 = Util.get(scope17,"value")
 			return Util.gettype(item1)
-		def _hx_local_21(parentscope18,scope18,l18,src18,tt18,b18,h18):
-			retval1 = _hx_AnonObject({})
-			arr = Util.get(scope18,"value")
-			if Util.isArray(arr):
+		def _hx_local_23(parentscope18,scope18,l18,src18,tt18,b20,h18):
+			retval2 = _hx_AnonObject({})
+			arr1 = Util.get(scope18,"value")
+			if Util.isArray(arr1):
 				_g1 = 0
 				_g11 = None
 				def _hx_local_0():
-					_hx_local_19 = arr
-					if Std._hx_is(_hx_local_19,list):
-						_hx_local_19
+					_hx_local_21 = arr1
+					if Std._hx_is(_hx_local_21,list):
+						_hx_local_21
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_19
+					return _hx_local_21
 				_g11 = _hx_local_0()
 				while (_g1 < len(_g11)):
 					entry = (_g11[_g1] if _g1 >= 0 and _g1 < len(_g11) else None)
 					_g1 = (_g1 + 1)
 					if ((Util.isArray(entry) and ((Reflect.field(entry,"length") >= 2))) and Util.isString(HxOverrides.arrayGet(entry, 0))):
 						field = HxOverrides.arrayGet(entry, 0)
-						setattr(retval1,(("_hx_" + field) if (field in python_Boot.keywords) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),HxOverrides.arrayGet(entry, 1))
-			return retval1
-		def _hx_local_22(parentscope19,scope19,l19,src19,tt19,b19,h19):
-			retval2 = _hx_AnonObject({})
+						setattr(retval2,(("_hx_" + field) if (field in python_Boot.keywords) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),HxOverrides.arrayGet(entry, 1))
+			return retval2
+		def _hx_local_24(parentscope19,scope19,l19,src19,tt19,b21,h19):
+			retval3 = _hx_AnonObject({})
 			listobj = Util.get(scope19,"list")
 			t = Util.get(scope19,"t")
 			accum = Util.get(scope19,"accum")
@@ -621,17 +643,17 @@ class Sutl:
 					setattr(s2,(("_hx_" + "item") if ("item" in python_Boot.keywords) else (("_hx_" + "item") if (((((len("item") > 2) and ((ord("item"[0]) == 95))) and ((ord("item"[1]) == 95))) and ((ord("item"[(len("item") - 1)]) != 95)))) else "item")),item2)
 					setattr(s2,(("_hx_" + "accum") if ("accum" in python_Boot.keywords) else (("_hx_" + "accum") if (((((len("accum") > 2) and ((ord("accum"[0]) == 95))) and ((ord("accum"[1]) == 95))) and ((ord("accum"[(len("accum") - 1)]) != 95)))) else "accum")),accum)
 					setattr(s2,(("_hx_" + "ix") if ("ix" in python_Boot.keywords) else (("_hx_" + "ix") if (((((len("ix") > 2) and ((ord("ix"[0]) == 95))) and ((ord("ix"[1]) == 95))) and ((ord("ix"[(len("ix") - 1)]) != 95)))) else "ix")),item2)
-					accum = _g._evaluate(s2,t,l19,src19,tt19,b19,h19)
+					accum = _g._evaluate(s2,t,l19,src19,tt19,b21,h19)
 			return accum
-		def _hx_local_23(parentscope20,scope20,l20,src20,tt20,b20,h20):
-			return _g._processPath(src20,parentscope20,scope20,l20,src20,tt20,b20,h20)
-		def _hx_local_24(parentscope21,scope21,l21,src21,tt21,b21,h21):
-			return _g._processPath(parentscope21,parentscope21,scope21,l21,src21,tt21,b21,h21)
-		def _hx_local_25(parentscope22,scope22,l22,src22,tt22,b22,h22):
-			return _g._processPath(l22,parentscope22,scope22,l22,src22,tt22,b22,h22)
-		def _hx_local_26(parentscope23,scope23,l23,src23,tt23,b23,h23):
-			return _g._processPath(tt23,parentscope23,scope23,l23,src23,tt23,b23,h23)
-		def _hx_local_27(parentscope24,scope24,l24,src24,tt24,b24,h24):
+		def _hx_local_25(parentscope20,scope20,l20,src20,tt20,b22,h20):
+			return _g._processPath(src20,parentscope20,scope20,l20,src20,tt20,b22,h20)
+		def _hx_local_26(parentscope21,scope21,l21,src21,tt21,b23,h21):
+			return _g._processPath(parentscope21,parentscope21,scope21,l21,src21,tt21,b23,h21)
+		def _hx_local_27(parentscope22,scope22,l22,src22,tt22,b24,h22):
+			return _g._processPath(l22,parentscope22,scope22,l22,src22,tt22,b24,h22)
+		def _hx_local_28(parentscope23,scope23,l23,src23,tt23,b25,h23):
+			return _g._processPath(tt23,parentscope23,scope23,l23,src23,tt23,b25,h23)
+		def _hx_local_29(parentscope24,scope24,l24,src24,tt24,b26,h24):
 			la = Util.get(scope24,"a")
 			lb = Util.get(scope24,"b")
 			lnotfirst = Util.get(scope24,"notfirst")
@@ -641,31 +663,31 @@ class Sutl:
 				return _g._doPath([lb],None)
 			else:
 				return _g._doPath([la],lb)
-		def _hx_local_28(parentscope25,scope25,l25,src25,tt25,b25,h25):
+		def _hx_local_30(parentscope25,scope25,l25,src25,tt25,b27,h25):
 			lb1 = Util.get(scope25,"b")
 			if Util.isSequence(lb1):
-				arr1 = Util.SequenceToArray(lb1)
-				if (len(arr1) > 0):
-					return (arr1[0] if 0 < len(arr1) else None)
+				arr2 = Util.SequenceToArray(lb1)
+				if (len(arr2) > 0):
+					return (arr2[0] if 0 < len(arr2) else None)
 				else:
 					return None
 			else:
 				return None
-		def _hx_local_29(parentscope26,scope26,l26,src26,tt26,b26,h26):
+		def _hx_local_31(parentscope26,scope26,l26,src26,tt26,b28,h26):
 			lb2 = Util.get(scope26,"b")
 			if Util.isSequence(lb2):
-				arr2 = Util.SequenceToArray(lb2)
-				if (len(arr2) > 0):
-					return arr2[1:None]
+				arr3 = Util.SequenceToArray(lb2)
+				if (len(arr3) > 0):
+					return arr3[1:None]
 				else:
 					return []
 			else:
 				return None
-		def _hx_local_31(parentscope27,scope27,l27,src27,tt27,b27,h27):
+		def _hx_local_33(parentscope27,scope27,l27,src27,tt27,b29,h27):
 			lvalue = Util.get(scope27,"value")
 			lsep = Util.get(scope27,"sep",",")
 			lmax = Util.get(scope27,"max")
-			retval3 = None
+			retval4 = None
 			if (not Util.isString(lvalue)):
 				pass
 			elif (not ((Util.isTruthy(lsep) and Util.isString(lsep)))):
@@ -675,70 +697,70 @@ class Sutl:
 			else:
 				lstr = None
 				def _hx_local_0():
-					_hx_local_30 = lvalue
-					if Std._hx_is(_hx_local_30,str):
-						_hx_local_30
+					_hx_local_32 = lvalue
+					if Std._hx_is(_hx_local_32,str):
+						_hx_local_32
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_30
+					return _hx_local_32
 				lstr = _hx_local_0()
-				retval3 = lvalue.split(lsep)
+				retval4 = lvalue.split(lsep)
 				if (((lmax is not None) and ((lmax >= 0))) and ((lmax < len(lstr)))):
-					lresult1 = retval3[0:(lmax - 1)]
-					lresult2 = retval3[(-1 * (((len(retval3) - lmax) + 1))):None]
+					lresult1 = retval4[0:(lmax - 1)]
+					lresult2 = retval4[(-1 * (((len(retval4) - lmax) + 1))):None]
 					python_internal_ArrayImpl._set(lresult1, (lmax - 1), lsep.join([python_Boot.toString1(x1,'') for x1 in lresult2]))
-					retval3 = lresult1
-			return retval3
-		def _hx_local_32(parentscope28,scope28,l28,src28,tt28,b28,h28):
+					retval4 = lresult1
+			return retval4
+		def _hx_local_34(parentscope28,scope28,l28,src28,tt28,b30,h28):
 			lvalue1 = Util.get(scope28,"value")
-			retval4 = None
+			retval5 = None
 			if (not Util.isString(lvalue1)):
 				pass
 			else:
-				retval4 = StringTools.trim(lvalue1)
-			return retval4
-		def _hx_local_34(parentscope29,scope29,l29,src29,tt29,b29,h29):
+				retval5 = StringTools.trim(lvalue1)
+			return retval5
+		def _hx_local_36(parentscope29,scope29,l29,src29,tt29,b31,h29):
 			lvalue2 = Util.get(scope29,"value")
 			lsub = Util.get(scope29,"sub")
-			retval5 = None
+			retval6 = None
 			if (not Util.isString(lvalue2)):
 				pass
 			elif (not ((Util.isTruthy(lsub) and Util.isString(lsub)))):
 				pass
 			else:
-				_this1 = None
+				_this = None
 				def _hx_local_0():
-					_hx_local_33 = lvalue2
-					if Std._hx_is(_hx_local_33,str):
-						_hx_local_33
+					_hx_local_35 = lvalue2
+					if Std._hx_is(_hx_local_35,str):
+						_hx_local_35
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_33
-				_this1 = _hx_local_0()
-				retval5 = _this1.find(lsub)
-			return retval5
-		functions = _hx_AnonObject({'+': _hx_local_0, '-': _hx_local_1, 'x': _hx_local_2, '/': _hx_local_3, '=': _hx_local_4, '!=': _hx_local_5, '>=': _hx_local_6, '<=': _hx_local_7, '>': _hx_local_8, '<': _hx_local_9, '&&': _hx_local_10, '||': _hx_local_11, '!': _hx_local_12, '_hx_if': _hx_local_13, 'keys': _hx_local_14, 'values': _hx_local_16, 'len': _hx_local_17, 'type': _hx_local_18, 'makemap': _hx_local_21, 'reduce': _hx_local_22, '$': _hx_local_23, '@': _hx_local_24, '*': _hx_local_25, '~': _hx_local_26, '%': _hx_local_27, 'head': _hx_local_28, 'tail': _hx_local_29, 'split': _hx_local_31, 'trim': _hx_local_32, 'pos': _hx_local_34})
+					return _hx_local_35
+				_this = _hx_local_0()
+				retval6 = _this.find(lsub)
+			return retval6
+		functions = _hx_AnonObject({'+': _hx_local_0, '-': _hx_local_1, 'x': _hx_local_2, '/': _hx_local_3, '=': _hx_local_4, '!=': _hx_local_5, '>=': _hx_local_6, '<=': _hx_local_7, '>': _hx_local_8, '<': _hx_local_9, '&&': _hx_local_10, '||': _hx_local_11, '!': _hx_local_12, '_hx_if': _hx_local_13, 'keys': _hx_local_15, 'values': _hx_local_18, 'len': _hx_local_19, 'type': _hx_local_20, 'makemap': _hx_local_23, 'reduce': _hx_local_24, '$': _hx_local_25, '@': _hx_local_26, '*': _hx_local_27, '~': _hx_local_28, '%': _hx_local_29, 'head': _hx_local_30, 'tail': _hx_local_31, 'split': _hx_local_33, 'trim': _hx_local_34, 'pos': _hx_local_36})
 		_g3 = 0
 		_g13 = python_Boot.fields(functions)
 		while (_g3 < len(_g13)):
 			fieldname = (_g13[_g3] if _g3 >= 0 and _g3 < len(_g13) else None)
 			_g3 = (_g3 + 1)
 			field1 = ("has" + ("null" if fieldname is None else fieldname))
-			def _hx_local_36(parentscope30,scope30,l30,src30,tt30,b30,h30):
+			def _hx_local_38(parentscope30,scope30,l30,src30,tt30,b32,h30):
 				return True
-			setattr(functions,(("_hx_" + field1) if (field1 in python_Boot.keywords) else (("_hx_" + field1) if (((((len(field1) > 2) and ((ord(field1[0]) == 95))) and ((ord(field1[1]) == 95))) and ((ord(field1[(len(field1) - 1)]) != 95)))) else field1)),_hx_local_36)
+			setattr(functions,(("_hx_" + field1) if (field1 in python_Boot.keywords) else (("_hx_" + field1) if (((((len(field1) > 2) and ((ord(field1[0]) == 95))) and ((ord(field1[1]) == 95))) and ((ord(field1[(len(field1) - 1)]) != 95)))) else field1)),_hx_local_38)
 		return functions
 
 	def logenter(self,msg,s,t,h):
 		if (h > 0):
-			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 488, 'className': "Sutl", 'methodName': "logenter"}))
-			haxe_Log.trace((" - s: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(s,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 489, 'className': "Sutl", 'methodName': "logenter"}))
-			haxe_Log.trace((" - t: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(t,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 490, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 501, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace((" - s: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(s,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 502, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace((" - t: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(t,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 503, 'className': "Sutl", 'methodName': "logenter"}))
 
 	def logexit(self,msg,r,h):
 		if (h > 0):
-			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 498, 'className': "Sutl", 'methodName': "logexit"}))
-			haxe_Log.trace((" - r: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(r,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 499, 'className': "Sutl", 'methodName': "logexit"}))
+			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 511, 'className': "Sutl", 'methodName': "logexit"}))
+			haxe_Log.trace((" - r: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(r,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 512, 'className': "Sutl", 'methodName': "logexit"}))
 
 	def evaluate(self,src,tt,l,h = 0):
 		if (h is None):
@@ -1401,9 +1423,10 @@ class Tests_Builtins(haxe_unit_TestCase):
 
 	def test_makemap(self):
 		entry1 = ["a", 1]
-		entry2 = ["b", 2]
-		scope = _hx_AnonObject({'value': [entry1, entry2]})
-		self.callbuiltin2("makemap",scope,_hx_AnonObject({'a': 1, 'b': 2}))
+		entry2 = ["b", "two"]
+		entry3 = ["c", 3]
+		scope = _hx_AnonObject({'value': [entry1, entry2, entry3]})
+		self.callbuiltin2("makemap",scope,_hx_AnonObject({'a': 1, 'b': "two", 'c': 3}))
 
 	def test_reduce(self):
 		scope = _hx_AnonObject({'list': [1, 2, 3], 't': "transform"})
@@ -1462,7 +1485,7 @@ Tests_Builtins._hx_class = Tests_Builtins
 class Tests_Decls(haxe_unit_TestCase):
 	_hx_class_name = "Tests_Decls"
 	_hx_fields = ["_coreDist"]
-	_hx_methods = ["quote", "unquote", "LoadCoreDist", "EvaluateTransform", "EvaluateTransform2", "testLoadCoreDist", "test_concat", "test_path1", "test_reduce1", "test_reduce2", "test_foldone", "test_zip", "test_1a", "test_1", "test_2", "test_3", "test_4", "test_5", "test_6", "test_7", "test_8", "test_9", "test_10", "test_11", "test_12", "test_13", "test_14", "test_15", "test_16", "test_17", "test_18", "test_19", "test_20", "test_21", "test_22", "test_23", "test_24", "test_25", "test_26", "test_27", "test_28"]
+	_hx_methods = ["quote", "unquote", "LoadCoreDist", "EvaluateTransform", "EvaluateTransform2", "testLoadCoreDist", "test_concat", "test_path1", "test_reduce1", "test_reduce2", "test_foldone", "test_zip", "test_1a", "test_1", "test_2", "test_3", "test_4", "test_5", "test_6", "test_7", "test_8", "test_9", "test_10", "test_11", "test_12", "test_13", "test_14", "test_15", "test_16", "test_17", "test_18", "test_19", "test_20", "test_21", "test_22", "test_23", "test_24", "test_25", "test_26", "test_27", "test_28", "test_29", "test_30", "test_30b", "test_31", "test_32", "test_33", "test_34", "test_35", "test_36", "test_37"]
 	_hx_statics = ["GetSource"]
 	_hx_interfaces = []
 	_hx_super = haxe_unit_TestCase
@@ -1561,14 +1584,14 @@ class Tests_Decls(haxe_unit_TestCase):
 
 	def test_1a(self):
 		ljsonDecls = [self.LoadCoreDist()]
-		ldecl = _hx_AnonObject({'requires': ["addmaps_core"], 'transform-t': _hx_AnonObject({'!': "^*.addmaps_core", 'map2': _hx_AnonObject({'x': 1}), 'map1': _hx_AnonObject({'y': 2})}), 'language': "sUTL0"})
+		ldecl = _hx_AnonObject({'requires': ["addmaps_core"], 'transform-t': _hx_AnonObject({'&': "addmaps_core", 'map2': _hx_AnonObject({'x': 1}), 'map1': _hx_AnonObject({'y': 2})}), 'language': "sUTL0"})
 		lexpected = _hx_AnonObject({'x': 1, 'y': 2})
 		lresult = self.EvaluateTransform(ldecl,ljsonDecls,None)
 		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 306, 'className': "Tests_Decls", 'methodName': "test_1a"}))
 
 	def test_1(self):
 		ljsonDecls = [self.LoadCoreDist()]
-		ldecl = _hx_AnonObject({'requires': ["addmaps_core", "removekeys_core"], 'transform-t': _hx_AnonObject({'!': "^*.addmaps_core", 'map2': _hx_AnonObject({'__meta__': _hx_AnonObject({'!': "^*.removekeys_core", 'map': "^$", 'keys': ["document"]})}), 'map1': "^$.document"}), 'language': "sUTL0"})
+		ldecl = _hx_AnonObject({'requires': ["addmaps_core", "removekeys_core"], 'transform-t': _hx_AnonObject({'!': "^*.addmaps_core", 'map1': "^$.document", 'map2': _hx_AnonObject({'__meta__': _hx_AnonObject({'!': "^*.removekeys_core", 'map': "^$", 'keys': ["document"]})})}), 'language': "sUTL0"})
 		lexpectedArr1 = [1, 2, [3, 4]]
 		lexpected = _hx_AnonObject({'description': "stuff", 'themeindex': 6, 'eventkeyid': "3a300a90-eca4-e101-383d-6bfd5990d791", 'published': True, '__meta__': _hx_AnonObject({'docalt': lexpectedArr1, 'updated': 1438517599342400, 'apkey': "2a02d608-6431-40aa-b0b2-91bf5f48cd84", 'invalid': False, 'stored': 1438313529667260, 'eventkeyid': "3a300a90-eca4-e101-383d-6bfd5990d791", 'key': "244de280-a01a-c5da-4162-ced9775246a5", 'clientkey': "82b25cfa-f0ec-4f44-9209-77cbd98edd6a", 'type': "CachedObject", 'indexnames': ["82B25CFA-F0EC-4F44-9209-77CBD98EDD6A-Metric"], 'objecttype': "Metric"}), 'type': "Metric_update", 'name': "thingo"})
 		lresult = self.EvaluateTransform(ldecl,ljsonDecls,Tests_Decls.GetSource())
@@ -1774,6 +1797,104 @@ class Tests_Decls(haxe_unit_TestCase):
 		lexpected = ["H", "e", "l", "l", "o", " ", "W", "o", "r", "l", "d", "!", "!"]
 		lresult = self.EvaluateTransform(ldecl,ljsonDecls,None)
 		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1251, 'className': "Tests_Decls", 'methodName': "test_28"}))
+
+	def test_29(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		ldeclArr = [["a", "b"], [1, 2]]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'&': "zip_core_emlynoregan_com", 'list': ldeclArr}), 'requires': ["zip_core_emlynoregan_com"]})
+		lexpectedArr1 = ["a", 1]
+		lexpectedArr2 = ["b", 2]
+		lexpected = [lexpectedArr1, lexpectedArr2]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,None)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1285, 'className': "Tests_Decls", 'methodName': "test_29"}))
+
+	def test_30(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': "two"})})
+		ldeclArr = [_hx_AnonObject({'&': "keys", 'map': "^@.map1"}), _hx_AnonObject({'&': "values", 'map': "^@.map1"})]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'!': "^*.zip_core_emlynoregan_com", 'list': ldeclArr})}), 'map1': _hx_AnonObject({'x': 1, 'y': "two"})}), 'requires': ["zip_core_emlynoregan_com"]})
+		lexpectedArr1 = ["x", 1]
+		lexpectedArr2 = ["y", "two"]
+		lexpected = [lexpectedArr1, lexpectedArr2]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1337, 'className': "Tests_Decls", 'methodName': "test_30"}))
+
+	def test_30b(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': 2}), 'keys': ["x", "y"], 'values': [1, 2]})
+		ldeclArr = ["^@.keys", _hx_AnonObject({'&': "values", 'map': "^@.map1"})]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': ldeclArr}), 'map1': _hx_AnonObject({'x': 1, 'y': 2}), 'keys': ["x", "y"], 'values': [1, 2]})})
+		lexpectedArr1 = ["x", "y"]
+		lexpectedArr2 = [1, 2]
+		lexpected = [lexpectedArr1, lexpectedArr2]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1386, 'className': "Tests_Decls", 'methodName': "test_30b"}))
+
+	def test_31(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': "two"}), 'map2': _hx_AnonObject({'z': 3})})
+		ldeclArr1 = ["&&", _hx_AnonObject({'&': "keys", 'map': "^@.map1"}), _hx_AnonObject({'&': "keys", 'map': "^@.map2"})]
+		ldeclArr2 = ["&&", _hx_AnonObject({'&': "values", 'map': "^@.map1"}), _hx_AnonObject({'&': "values", 'map': "^@.map2"})]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'&': "zip", 'list': [ldeclArr1, ldeclArr2]}), 'requires': ["zip"]})
+		lexpectedArr1 = ["x", 1]
+		lexpectedArr2 = ["y", "two"]
+		lexpectedArr3 = ["z", 3]
+		lexpected = [lexpectedArr1, lexpectedArr2, lexpectedArr3]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1449, 'className': "Tests_Decls", 'methodName': "test_31"}))
+
+	def test_32(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsourceArr1 = ["x", 1]
+		lsourceArr2 = ["y", "two"]
+		lsourceArr3 = ["z", 3]
+		lsource = _hx_AnonObject({'x': [lsourceArr1, lsourceArr2, lsourceArr3], 'value': _hx_AnonObject({'z': 5})})
+		ldeclArr = ["^%", _hx_AnonObject({'z': "^@.x"}), "z"]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'&': "makemap"})}), 'value': ldeclArr})})
+		lexpected = _hx_AnonObject({'x': 1, 'y': "two", 'z': 3})
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1484, 'className': "Tests_Decls", 'methodName': "test_32"}))
+
+	def test_33(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': "two"}), 'map2': _hx_AnonObject({'z': 3})})
+		ldeclArr1 = ["&&", _hx_AnonObject({'&': "keys", 'map': "^@.map1"}), _hx_AnonObject({'&': "keys", 'map': "^@.map2"})]
+		ldeclArr2 = ["&&", _hx_AnonObject({'&': "values", 'map': "^@.map1"}), _hx_AnonObject({'&': "values", 'map': "^@.map2"})]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'&': "makemap", 'value': _hx_AnonObject({'!': "^*.zip_core_emlynoregan_com", 'list': [ldeclArr1, ldeclArr2]})})}), 'map1': _hx_AnonObject({'x': 1, 'y': "two"}), 'map2': _hx_AnonObject({'z': 3})}), 'requires': ["zip_core_emlynoregan_com"]})
+		lexpected = _hx_AnonObject({'x': 1, 'y': "two", 'z': 3})
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1560, 'className': "Tests_Decls", 'methodName': "test_33"}))
+
+	def test_34(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'z': ["^@.x", "^@.y"]})}), 'x': _hx_AnonObject({'z': 5})})}), 'x': _hx_AnonObject({'z': 3}), 'y': _hx_AnonObject({'z': 4})})})
+		lexpected = _hx_AnonObject({'z': [_hx_AnonObject({'z': 5}), _hx_AnonObject({'z': 4})]})
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,None)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1588, 'className': "Tests_Decls", 'methodName': "test_34"}))
+
+	def test_35(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': "two"}), 'map2': _hx_AnonObject({'z': 3})})
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'&': "addmaps_core"}), 'requires': ["addmaps_core"]})
+		lexpected = _hx_AnonObject({'x': 1, 'y': "two", 'z': 3})
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1625, 'className': "Tests_Decls", 'methodName': "test_35"}))
+
+	def test_36(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource = _hx_AnonObject({'map1': _hx_AnonObject({'x': 1, 'y': 2})})
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'!': _hx_AnonObject({':': _hx_AnonObject({'&': "keys", 'map': "^@.map1"})}), 'map1': _hx_AnonObject({'x': 1, 'y': 2})})})
+		lexpected = ["x", "y"]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,lsource)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1661, 'className': "Tests_Decls", 'methodName': "test_36"}))
+
+	def test_37(self):
+		ljsonDecls = [self.LoadCoreDist()]
+		lsource_map1 = _hx_AnonObject({'x': 1, 'y': 2})
+		ldecl = _hx_AnonObject({'transform-t': _hx_AnonObject({'&': "keys", 'map': _hx_AnonObject({'xxx': 1, 'yyy': 2})})})
+		lexpected = ["xxx", "yyy"]
+		lresult = self.EvaluateTransform(ldecl,ljsonDecls,None)
+		self.assertTrue(Util.deepEqual(lexpected,lresult),_hx_AnonObject({'fileName': "Tests_Decls.hx", 'lineNumber': 1694, 'className': "Tests_Decls", 'methodName': "test_37"}))
 
 	@staticmethod
 	def GetSource():
@@ -2000,7 +2121,7 @@ Tests_Paths._hx_class = Tests_Paths
 class Tests_isType(haxe_unit_TestCase):
 	_hx_class_name = "Tests_isType"
 	_hx_fields = []
-	_hx_methods = ["quote", "unquote", "isType", "GetType", "getValue", "testIsObject", "testIsArray", "testIsString", "testIsNumber", "testIsNumber2", "testIsBool", "testGetTypeObject", "testGetTypeArray", "testGetTypeString", "testGetTypeNumber", "testGetTypeNumber2", "testGetTypeBool", "testGetTypeNull", "testIsTruthyObj", "testIsNotTruthyObj", "testIsTruthyList", "testIsNotTruthyList", "testIsTruthyString", "testIsNotTruthyString", "testIsTruthyNumber", "testIsNotTruthyNumber", "testIsTruthyBool", "testIsNotTruthyBool", "testIsNotTruthyNull", "testIsBuiltinEval", "testIsBuiltinEval2", "testIsArrayBuiltinEval", "testIsArrayBuiltinEval2", "testIsStringBuiltinEval", "testIsStringBuiltinEval2", "testIsStringBuiltinEval3", "testIsEval", "testIsEval2", "testIsQuoteEval", "testIsDoubleQuoteEval", "testIsColonEval", "testIsListTransform", "testIsDictTransform"]
+	_hx_methods = ["quote", "unquote", "isType", "GetType", "getValue", "testIsObject", "testIsArray", "testIsString", "testIsNumber", "testIsNumber2", "testIsBool", "testGetTypeObject", "testGetTypeArray", "testGetTypeString", "testGetTypeNumber", "testGetTypeNumber2", "testGetTypeBool", "testGetTypeNull", "testIsTruthyObj", "testIsNotTruthyObj", "testIsTruthyList", "testIsNotTruthyList", "testIsTruthyString", "testIsNotTruthyString", "testIsTruthyNumber", "testIsNotTruthyNumber", "testIsTruthyBool", "testIsNotTruthyBool", "testIsNotTruthyNull", "testIsBuiltinEval", "testIsBuiltinEval2", "testIsArrayBuiltinEval", "testIsArrayBuiltinEval2", "testIsStringBuiltinEval", "testIsStringBuiltinEval2", "testIsStringBuiltinEval3", "testIsEval", "testIsEval2", "testIsQuoteEval", "testIsDoubleQuoteEval", "testIsColonEval", "testIsListTransform", "testIsDictTransform", "testShallowCopy", "testAddObject"]
 	_hx_statics = []
 	_hx_interfaces = []
 	_hx_super = haxe_unit_TestCase
@@ -2173,6 +2294,20 @@ class Tests_isType(haxe_unit_TestCase):
 	def testIsDictTransform(self):
 		obj = _hx_AnonObject({})
 		self.assertTrue(Util.isDictTransform(obj),_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 317, 'className': "Tests_isType", 'methodName': "testIsDictTransform"}))
+
+	def testShallowCopy(self):
+		lsource = python_Boot.fields(_hx_AnonObject({'a': 1, 'b': 2}))
+		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 323, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
+		lcopy = Util.shallowCopy(lsource)
+		haxe_Log.trace(lcopy,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 325, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
+		self.assertTrue(Util.deepEqual(lsource,lcopy),_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 326, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
+
+	def testAddObject(self):
+		lsource = _hx_AnonObject({'a': 1, 'b': 2})
+		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 332, 'className': "Tests_isType", 'methodName': "testAddObject"}))
+		Util.addObject(lsource,_hx_AnonObject({'c': 3}))
+		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 334, 'className': "Tests_isType", 'methodName': "testAddObject"}))
+		self.assertTrue(Util.deepEqual(lsource,_hx_AnonObject({'a': 1, 'b': 2, 'c': 3})),_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 335, 'className': "Tests_isType", 'methodName': "testAddObject"}))
 
 Tests_isType._hx_class = Tests_isType
 
@@ -2420,7 +2555,7 @@ class Util:
 		elif (item is None):
 			return "null"
 		else:
-			return "unknown"
+			return Std.string(Type.typeof(item))
 
 	@staticmethod
 	def MakeExcept(aMessage,aPath):
@@ -3004,8 +3139,8 @@ class haxe_unit_TestResult:
 		while (_g_head is not None):
 			test = None
 			def _hx_local_0():
-				nonlocal _g_head
 				nonlocal _g_val
+				nonlocal _g_head
 				_g_val = (_g_head[0] if 0 < len(_g_head) else None)
 				_g_head = (_g_head[1] if 1 < len(_g_head) else None)
 				return _g_val
@@ -3073,8 +3208,8 @@ class haxe_unit_TestRunner:
 		while (_g_head is not None):
 			c = None
 			def _hx_local_0():
-				nonlocal _g_val
 				nonlocal _g_head
+				nonlocal _g_val
 				_g_val = (_g_head[0] if 0 < len(_g_head) else None)
 				_g_head = (_g_head[1] if 1 < len(_g_head) else None)
 				return _g_val
@@ -3858,7 +3993,7 @@ _HxException._hx_class = _HxException
 
 class HxOverrides:
 	_hx_class_name = "HxOverrides"
-	_hx_statics = ["eq", "stringOrNull", "push", "arrayGet", "mapKwArgs"]
+	_hx_statics = ["eq", "stringOrNull", "push", "map", "arrayGet", "mapKwArgs"]
 
 	@staticmethod
 	def eq(a,b):
@@ -3880,6 +4015,12 @@ class HxOverrides:
 			_this.append(e)
 			return len(_this)
 		return x.push(e)
+
+	@staticmethod
+	def map(x,f):
+		if isinstance(x,list):
+			return list(map(f,x))
+		return x.map(f)
 
 	@staticmethod
 	def arrayGet(a,i):

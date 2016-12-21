@@ -61,7 +61,7 @@ EnumValue._hx_class = EnumValue
 
 class Reflect:
 	_hx_class_name = "Reflect"
-	_hx_statics = ["field", "isFunction", "isObject", "deleteField"]
+	_hx_statics = ["field", "isFunction", "compare", "isObject", "deleteField"]
 
 	@staticmethod
 	def field(o,field):
@@ -70,6 +70,21 @@ class Reflect:
 	@staticmethod
 	def isFunction(f):
 		return ((python_lib_Inspect.isfunction(f) or python_lib_Inspect.ismethod(f)) or hasattr(f,"func_code"))
+
+	@staticmethod
+	def compare(a,b):
+		if ((a is None) and ((b is None))):
+			return 0
+		if (a is None):
+			return 1
+		elif (b is None):
+			return -1
+		elif (a == b):
+			return 0
+		elif (a > b):
+			return 1
+		else:
+			return -1
 
 	@staticmethod
 	def isObject(v):
@@ -505,55 +520,62 @@ class Sutl:
 			elif hasattr(scope13,(("_hx_" + "false") if ("false" in python_Boot.keywords) else (("_hx_" + "false") if (((((len("false") > 2) and ((ord("false"[0]) == 95))) and ((ord("false"[1]) == 95))) and ((ord("false"[(len("false") - 1)]) != 95)))) else "false"))):
 				retval = _g._evaluate(parentscope13,Util.get(scope13,"false"),l13,src13,tt13,b13,h13)
 			return retval
-		def _hx_local_14(parentscope14,scope14,l14,src14,tt14,b14,h14):
+		def _hx_local_15(parentscope14,scope14,l14,src14,tt14,b14,h14):
 			obj = Util.get(scope14,"map")
 			if Util.isObject(obj):
-				return python_Boot.fields(obj)
+				retval1 = python_Boot.fields(obj)
+				def _hx_local_14(a1,b15):
+					return Reflect.compare(a1,b15)
+				retval1.sort(key= python_lib_Functools.cmp_to_key(_hx_local_14))
+				return retval1
 			else:
 				return None
-		def _hx_local_16(parentscope15,scope15,l15,src15,tt15,b15,h15):
+		def _hx_local_18(parentscope15,scope15,l15,src15,tt15,b16,h15):
 			obj1 = Util.get(scope15,"map")
 			if Util.isObject(obj1):
-				vals = None
-				_this = python_Boot.fields(obj1)
-				def _hx_local_15(key):
+				keys = python_Boot.fields(obj1)
+				def _hx_local_16(a2,b17):
+					return Reflect.compare(a2,b17)
+				Reflect.field(keys,"sort")(_hx_local_16)
+				def _hx_local_17(key):
 					return Util.get(obj1,key)
-				vals = list(map(_hx_local_15,_this))
+				vals = Reflect.field(keys,"map")(_hx_local_17)
 				return vals
 			else:
 				return None
-		def _hx_local_17(parentscope16,scope16,l16,src16,tt16,b16,h16):
+		def _hx_local_19(parentscope16,scope16,l16,src16,tt16,b18,h16):
 			item = Util.get(scope16,"list",Util.get(scope16,"value"))
 			if Util.isSequence(item):
-				return item.length
+				arr = Util.SequenceToArray(item)
+				return len(arr)
 			else:
 				return 0
-		def _hx_local_18(parentscope17,scope17,l17,src17,tt17,b17,h17):
+		def _hx_local_20(parentscope17,scope17,l17,src17,tt17,b19,h17):
 			item1 = Util.get(scope17,"value")
 			return Util.gettype(item1)
-		def _hx_local_21(parentscope18,scope18,l18,src18,tt18,b18,h18):
-			retval1 = _hx_AnonObject({})
-			arr = Util.get(scope18,"value")
-			if Util.isArray(arr):
+		def _hx_local_23(parentscope18,scope18,l18,src18,tt18,b20,h18):
+			retval2 = _hx_AnonObject({})
+			arr1 = Util.get(scope18,"value")
+			if Util.isArray(arr1):
 				_g1 = 0
 				_g11 = None
 				def _hx_local_0():
-					_hx_local_19 = arr
-					if Std._hx_is(_hx_local_19,list):
-						_hx_local_19
+					_hx_local_21 = arr1
+					if Std._hx_is(_hx_local_21,list):
+						_hx_local_21
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_19
+					return _hx_local_21
 				_g11 = _hx_local_0()
 				while (_g1 < len(_g11)):
 					entry = (_g11[_g1] if _g1 >= 0 and _g1 < len(_g11) else None)
 					_g1 = (_g1 + 1)
 					if ((Util.isArray(entry) and ((Reflect.field(entry,"length") >= 2))) and Util.isString(HxOverrides.arrayGet(entry, 0))):
 						field = HxOverrides.arrayGet(entry, 0)
-						setattr(retval1,(("_hx_" + field) if (field in python_Boot.keywords) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),HxOverrides.arrayGet(entry, 1))
-			return retval1
-		def _hx_local_22(parentscope19,scope19,l19,src19,tt19,b19,h19):
-			retval2 = _hx_AnonObject({})
+						setattr(retval2,(("_hx_" + field) if (field in python_Boot.keywords) else (("_hx_" + field) if (((((len(field) > 2) and ((ord(field[0]) == 95))) and ((ord(field[1]) == 95))) and ((ord(field[(len(field) - 1)]) != 95)))) else field)),HxOverrides.arrayGet(entry, 1))
+			return retval2
+		def _hx_local_24(parentscope19,scope19,l19,src19,tt19,b21,h19):
+			retval3 = _hx_AnonObject({})
 			listobj = Util.get(scope19,"list")
 			t = Util.get(scope19,"t")
 			accum = Util.get(scope19,"accum")
@@ -572,17 +594,17 @@ class Sutl:
 					setattr(s2,(("_hx_" + "item") if ("item" in python_Boot.keywords) else (("_hx_" + "item") if (((((len("item") > 2) and ((ord("item"[0]) == 95))) and ((ord("item"[1]) == 95))) and ((ord("item"[(len("item") - 1)]) != 95)))) else "item")),item2)
 					setattr(s2,(("_hx_" + "accum") if ("accum" in python_Boot.keywords) else (("_hx_" + "accum") if (((((len("accum") > 2) and ((ord("accum"[0]) == 95))) and ((ord("accum"[1]) == 95))) and ((ord("accum"[(len("accum") - 1)]) != 95)))) else "accum")),accum)
 					setattr(s2,(("_hx_" + "ix") if ("ix" in python_Boot.keywords) else (("_hx_" + "ix") if (((((len("ix") > 2) and ((ord("ix"[0]) == 95))) and ((ord("ix"[1]) == 95))) and ((ord("ix"[(len("ix") - 1)]) != 95)))) else "ix")),item2)
-					accum = _g._evaluate(s2,t,l19,src19,tt19,b19,h19)
+					accum = _g._evaluate(s2,t,l19,src19,tt19,b21,h19)
 			return accum
-		def _hx_local_23(parentscope20,scope20,l20,src20,tt20,b20,h20):
-			return _g._processPath(src20,parentscope20,scope20,l20,src20,tt20,b20,h20)
-		def _hx_local_24(parentscope21,scope21,l21,src21,tt21,b21,h21):
-			return _g._processPath(parentscope21,parentscope21,scope21,l21,src21,tt21,b21,h21)
-		def _hx_local_25(parentscope22,scope22,l22,src22,tt22,b22,h22):
-			return _g._processPath(l22,parentscope22,scope22,l22,src22,tt22,b22,h22)
-		def _hx_local_26(parentscope23,scope23,l23,src23,tt23,b23,h23):
-			return _g._processPath(tt23,parentscope23,scope23,l23,src23,tt23,b23,h23)
-		def _hx_local_27(parentscope24,scope24,l24,src24,tt24,b24,h24):
+		def _hx_local_25(parentscope20,scope20,l20,src20,tt20,b22,h20):
+			return _g._processPath(src20,parentscope20,scope20,l20,src20,tt20,b22,h20)
+		def _hx_local_26(parentscope21,scope21,l21,src21,tt21,b23,h21):
+			return _g._processPath(parentscope21,parentscope21,scope21,l21,src21,tt21,b23,h21)
+		def _hx_local_27(parentscope22,scope22,l22,src22,tt22,b24,h22):
+			return _g._processPath(l22,parentscope22,scope22,l22,src22,tt22,b24,h22)
+		def _hx_local_28(parentscope23,scope23,l23,src23,tt23,b25,h23):
+			return _g._processPath(tt23,parentscope23,scope23,l23,src23,tt23,b25,h23)
+		def _hx_local_29(parentscope24,scope24,l24,src24,tt24,b26,h24):
 			la = Util.get(scope24,"a")
 			lb = Util.get(scope24,"b")
 			lnotfirst = Util.get(scope24,"notfirst")
@@ -592,31 +614,31 @@ class Sutl:
 				return _g._doPath([lb],None)
 			else:
 				return _g._doPath([la],lb)
-		def _hx_local_28(parentscope25,scope25,l25,src25,tt25,b25,h25):
+		def _hx_local_30(parentscope25,scope25,l25,src25,tt25,b27,h25):
 			lb1 = Util.get(scope25,"b")
 			if Util.isSequence(lb1):
-				arr1 = Util.SequenceToArray(lb1)
-				if (len(arr1) > 0):
-					return (arr1[0] if 0 < len(arr1) else None)
+				arr2 = Util.SequenceToArray(lb1)
+				if (len(arr2) > 0):
+					return (arr2[0] if 0 < len(arr2) else None)
 				else:
 					return None
 			else:
 				return None
-		def _hx_local_29(parentscope26,scope26,l26,src26,tt26,b26,h26):
+		def _hx_local_31(parentscope26,scope26,l26,src26,tt26,b28,h26):
 			lb2 = Util.get(scope26,"b")
 			if Util.isSequence(lb2):
-				arr2 = Util.SequenceToArray(lb2)
-				if (len(arr2) > 0):
-					return arr2[1:None]
+				arr3 = Util.SequenceToArray(lb2)
+				if (len(arr3) > 0):
+					return arr3[1:None]
 				else:
 					return []
 			else:
 				return None
-		def _hx_local_31(parentscope27,scope27,l27,src27,tt27,b27,h27):
+		def _hx_local_33(parentscope27,scope27,l27,src27,tt27,b29,h27):
 			lvalue = Util.get(scope27,"value")
 			lsep = Util.get(scope27,"sep",",")
 			lmax = Util.get(scope27,"max")
-			retval3 = None
+			retval4 = None
 			if (not Util.isString(lvalue)):
 				pass
 			elif (not ((Util.isTruthy(lsep) and Util.isString(lsep)))):
@@ -626,58 +648,58 @@ class Sutl:
 			else:
 				lstr = None
 				def _hx_local_0():
-					_hx_local_30 = lvalue
-					if Std._hx_is(_hx_local_30,str):
-						_hx_local_30
+					_hx_local_32 = lvalue
+					if Std._hx_is(_hx_local_32,str):
+						_hx_local_32
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_30
+					return _hx_local_32
 				lstr = _hx_local_0()
-				retval3 = lvalue.split(lsep)
+				retval4 = lvalue.split(lsep)
 				if (((lmax is not None) and ((lmax >= 0))) and ((lmax < len(lstr)))):
-					lresult1 = retval3[0:(lmax - 1)]
-					lresult2 = retval3[(-1 * (((len(retval3) - lmax) + 1))):None]
+					lresult1 = retval4[0:(lmax - 1)]
+					lresult2 = retval4[(-1 * (((len(retval4) - lmax) + 1))):None]
 					python_internal_ArrayImpl._set(lresult1, (lmax - 1), lsep.join([python_Boot.toString1(x1,'') for x1 in lresult2]))
-					retval3 = lresult1
-			return retval3
-		def _hx_local_32(parentscope28,scope28,l28,src28,tt28,b28,h28):
+					retval4 = lresult1
+			return retval4
+		def _hx_local_34(parentscope28,scope28,l28,src28,tt28,b30,h28):
 			lvalue1 = Util.get(scope28,"value")
-			retval4 = None
+			retval5 = None
 			if (not Util.isString(lvalue1)):
 				pass
 			else:
-				retval4 = StringTools.trim(lvalue1)
-			return retval4
-		def _hx_local_34(parentscope29,scope29,l29,src29,tt29,b29,h29):
+				retval5 = StringTools.trim(lvalue1)
+			return retval5
+		def _hx_local_36(parentscope29,scope29,l29,src29,tt29,b31,h29):
 			lvalue2 = Util.get(scope29,"value")
 			lsub = Util.get(scope29,"sub")
-			retval5 = None
+			retval6 = None
 			if (not Util.isString(lvalue2)):
 				pass
 			elif (not ((Util.isTruthy(lsub) and Util.isString(lsub)))):
 				pass
 			else:
-				_this1 = None
+				_this = None
 				def _hx_local_0():
-					_hx_local_33 = lvalue2
-					if Std._hx_is(_hx_local_33,str):
-						_hx_local_33
+					_hx_local_35 = lvalue2
+					if Std._hx_is(_hx_local_35,str):
+						_hx_local_35
 					else:
 						raise _HxException("Class cast error")
-					return _hx_local_33
-				_this1 = _hx_local_0()
-				retval5 = _this1.find(lsub)
-			return retval5
-		functions = _hx_AnonObject({'+': _hx_local_0, '-': _hx_local_1, 'x': _hx_local_2, '/': _hx_local_3, '=': _hx_local_4, '!=': _hx_local_5, '>=': _hx_local_6, '<=': _hx_local_7, '>': _hx_local_8, '<': _hx_local_9, '&&': _hx_local_10, '||': _hx_local_11, '!': _hx_local_12, '_hx_if': _hx_local_13, 'keys': _hx_local_14, 'values': _hx_local_16, 'len': _hx_local_17, 'type': _hx_local_18, 'makemap': _hx_local_21, 'reduce': _hx_local_22, '$': _hx_local_23, '@': _hx_local_24, '*': _hx_local_25, '~': _hx_local_26, '%': _hx_local_27, 'head': _hx_local_28, 'tail': _hx_local_29, 'split': _hx_local_31, 'trim': _hx_local_32, 'pos': _hx_local_34})
+					return _hx_local_35
+				_this = _hx_local_0()
+				retval6 = _this.find(lsub)
+			return retval6
+		functions = _hx_AnonObject({'+': _hx_local_0, '-': _hx_local_1, 'x': _hx_local_2, '/': _hx_local_3, '=': _hx_local_4, '!=': _hx_local_5, '>=': _hx_local_6, '<=': _hx_local_7, '>': _hx_local_8, '<': _hx_local_9, '&&': _hx_local_10, '||': _hx_local_11, '!': _hx_local_12, '_hx_if': _hx_local_13, 'keys': _hx_local_15, 'values': _hx_local_18, 'len': _hx_local_19, 'type': _hx_local_20, 'makemap': _hx_local_23, 'reduce': _hx_local_24, '$': _hx_local_25, '@': _hx_local_26, '*': _hx_local_27, '~': _hx_local_28, '%': _hx_local_29, 'head': _hx_local_30, 'tail': _hx_local_31, 'split': _hx_local_33, 'trim': _hx_local_34, 'pos': _hx_local_36})
 		_g3 = 0
 		_g13 = python_Boot.fields(functions)
 		while (_g3 < len(_g13)):
 			fieldname = (_g13[_g3] if _g3 >= 0 and _g3 < len(_g13) else None)
 			_g3 = (_g3 + 1)
 			field1 = ("has" + ("null" if fieldname is None else fieldname))
-			def _hx_local_36(parentscope30,scope30,l30,src30,tt30,b30,h30):
+			def _hx_local_38(parentscope30,scope30,l30,src30,tt30,b32,h30):
 				return True
-			setattr(functions,(("_hx_" + field1) if (field1 in python_Boot.keywords) else (("_hx_" + field1) if (((((len(field1) > 2) and ((ord(field1[0]) == 95))) and ((ord(field1[1]) == 95))) and ((ord(field1[(len(field1) - 1)]) != 95)))) else field1)),_hx_local_36)
+			setattr(functions,(("_hx_" + field1) if (field1 in python_Boot.keywords) else (("_hx_" + field1) if (((((len(field1) > 2) and ((ord(field1[0]) == 95))) and ((ord(field1[1]) == 95))) and ((ord(field1[(len(field1) - 1)]) != 95)))) else field1)),_hx_local_38)
 		return functions
 
 	def logenter(self,msg,s,t,h):
@@ -1301,7 +1323,7 @@ class Util:
 		elif (item is None):
 			return "null"
 		else:
-			return "unknown"
+			return Std.string(Type.typeof(item))
 
 	@staticmethod
 	def MakeExcept(aMessage,aPath):
@@ -2445,7 +2467,7 @@ _HxException._hx_class = _HxException
 
 class HxOverrides:
 	_hx_class_name = "HxOverrides"
-	_hx_statics = ["eq", "stringOrNull", "push", "arrayGet", "mapKwArgs"]
+	_hx_statics = ["eq", "stringOrNull", "push", "map", "arrayGet", "mapKwArgs"]
 
 	@staticmethod
 	def eq(a,b):
@@ -2467,6 +2489,12 @@ class HxOverrides:
 			_this.append(e)
 			return len(_this)
 		return x.push(e)
+
+	@staticmethod
+	def map(x,f):
+		if isinstance(x,list):
+			return list(map(f,x))
+		return x.map(f)
 
 	@staticmethod
 	def arrayGet(a,i):
