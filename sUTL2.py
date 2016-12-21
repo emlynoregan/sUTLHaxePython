@@ -1326,7 +1326,7 @@ class Util:
 		elif (item is None):
 			return "null"
 		else:
-			return Std.string(Type.typeof(item))
+			return "unknown"
 
 	@staticmethod
 	def MakeExcept(aMessage,aPath):
