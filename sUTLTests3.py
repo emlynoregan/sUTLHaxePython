@@ -2297,16 +2297,12 @@ class Tests_isType(haxe_unit_TestCase):
 
 	def testShallowCopy(self):
 		lsource = python_Boot.fields(_hx_AnonObject({'a': 1, 'b': 2}))
-		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 323, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
 		lcopy = Util.shallowCopy(lsource)
-		haxe_Log.trace(lcopy,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 325, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
 		self.assertTrue(Util.deepEqual(lsource,lcopy),_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 326, 'className': "Tests_isType", 'methodName': "testShallowCopy"}))
 
 	def testAddObject(self):
 		lsource = _hx_AnonObject({'a': 1, 'b': 2})
-		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 332, 'className': "Tests_isType", 'methodName': "testAddObject"}))
 		Util.addObject(lsource,_hx_AnonObject({'c': 3}))
-		haxe_Log.trace(lsource,_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 334, 'className': "Tests_isType", 'methodName': "testAddObject"}))
 		self.assertTrue(Util.deepEqual(lsource,_hx_AnonObject({'a': 1, 'b': 2, 'c': 3})),_hx_AnonObject({'fileName': "Tests_isType.hx", 'lineNumber': 335, 'className': "Tests_isType", 'methodName': "testAddObject"}))
 
 Tests_isType._hx_class = Tests_isType
@@ -3208,8 +3204,8 @@ class haxe_unit_TestRunner:
 		while (_g_head is not None):
 			c = None
 			def _hx_local_0():
-				nonlocal _g_head
 				nonlocal _g_val
+				nonlocal _g_head
 				_g_val = (_g_head[0] if 0 < len(_g_head) else None)
 				_g_head = (_g_head[1] if 1 < len(_g_head) else None)
 				return _g_val
