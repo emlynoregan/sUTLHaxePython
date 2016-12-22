@@ -359,11 +359,32 @@ StringTools._hx_class = StringTools
 
 class Sutl:
 	_hx_class_name = "Sutl"
-	_hx_methods = ["_processPath", "_doPath", "builtins", "logenter", "logexit", "evaluate", "dec", "_evaluate", "_quoteEvaluate", "_evaluateStringBuiltin", "_evaluateArrayBuiltin", "_evaluateBuiltin", "_evaluateBuiltinSimple", "_evaluateEval", "_evaluateEval2", "_evaluateDict", "_quoteEvaluateDict", "_doevaluateDict", "_evaluateList", "_quoteEvaluateList", "_doevaluateList", "compilelib", "_compilelib"]
+	_hx_methods = ["ExampleString", "ExampleInt", "ExampleFloat", "ExampleBool", "ExampleNull", "ExampleArray", "ExampleDict", "_processPath", "_doPath", "builtins", "logenter", "logexit", "evaluate", "dec", "_evaluate", "_quoteEvaluate", "_evaluateStringBuiltin", "_evaluateArrayBuiltin", "_evaluateBuiltin", "_evaluateBuiltinSimple", "_evaluateEval", "_evaluateEval2", "_evaluateDict", "_quoteEvaluateDict", "_doevaluateDict", "_evaluateList", "_quoteEvaluateList", "_doevaluateList", "compilelib", "_compilelib"]
 	_hx_statics = ["version"]
 
 	def __init__(self):
 		pass
+
+	def ExampleString(self):
+		return "example string"
+
+	def ExampleInt(self):
+		return 1
+
+	def ExampleFloat(self):
+		return 1.0
+
+	def ExampleBool(self):
+		return True
+
+	def ExampleNull(self):
+		return None
+
+	def ExampleArray(self):
+		return [1, 2]
+
+	def ExampleDict(self):
+		return _hx_AnonObject({'x': 1})
 
 	def _processPath(self,startfrom,parentscope,scope,l,src,tt,b,h):
 		la = Util.get(scope,"a")

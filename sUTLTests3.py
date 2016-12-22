@@ -405,11 +405,32 @@ StringTools._hx_class = StringTools
 
 class Sutl:
 	_hx_class_name = "Sutl"
-	_hx_methods = ["_processPath", "_doPath", "builtins", "logenter", "logexit", "evaluate", "dec", "_evaluate", "_quoteEvaluate", "_evaluateStringBuiltin", "_evaluateArrayBuiltin", "_evaluateBuiltin", "_evaluateBuiltinSimple", "_evaluateEval", "_evaluateEval2", "_evaluateDict", "_quoteEvaluateDict", "_doevaluateDict", "_evaluateList", "_quoteEvaluateList", "_doevaluateList", "compilelib", "_compilelib"]
+	_hx_methods = ["ExampleString", "ExampleInt", "ExampleFloat", "ExampleBool", "ExampleNull", "ExampleArray", "ExampleDict", "_processPath", "_doPath", "builtins", "logenter", "logexit", "evaluate", "dec", "_evaluate", "_quoteEvaluate", "_evaluateStringBuiltin", "_evaluateArrayBuiltin", "_evaluateBuiltin", "_evaluateBuiltinSimple", "_evaluateEval", "_evaluateEval2", "_evaluateDict", "_quoteEvaluateDict", "_doevaluateDict", "_evaluateList", "_quoteEvaluateList", "_doevaluateList", "compilelib", "_compilelib"]
 	_hx_statics = ["version"]
 
 	def __init__(self):
 		pass
+
+	def ExampleString(self):
+		return "example string"
+
+	def ExampleInt(self):
+		return 1
+
+	def ExampleFloat(self):
+		return 1.0
+
+	def ExampleBool(self):
+		return True
+
+	def ExampleNull(self):
+		return None
+
+	def ExampleArray(self):
+		return [1, 2]
+
+	def ExampleDict(self):
+		return _hx_AnonObject({'x': 1})
 
 	def _processPath(self,startfrom,parentscope,scope,l,src,tt,b,h):
 		la = Util.get(scope,"a")
@@ -514,7 +535,7 @@ class Sutl:
 					except Exception as _hx_e:
 						_hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
 						ex = _hx_e1
-						haxe_Log.trace(ex,_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 115, 'className': "Sutl", 'methodName': "_doPath"}))
+						haxe_Log.trace(ex,_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 150, 'className': "Sutl", 'methodName': "_doPath"}))
 			else:
 				retval = a
 		return retval
@@ -753,14 +774,14 @@ class Sutl:
 
 	def logenter(self,msg,s,t,h):
 		if (h > 0):
-			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 501, 'className': "Sutl", 'methodName': "logenter"}))
-			haxe_Log.trace((" - s: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(s,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 502, 'className': "Sutl", 'methodName': "logenter"}))
-			haxe_Log.trace((" - t: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(t,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 503, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 536, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace((" - s: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(s,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 537, 'className': "Sutl", 'methodName': "logenter"}))
+			haxe_Log.trace((" - t: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(t,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 538, 'className': "Sutl", 'methodName': "logenter"}))
 
 	def logexit(self,msg,r,h):
 		if (h > 0):
-			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 511, 'className': "Sutl", 'methodName': "logexit"}))
-			haxe_Log.trace((" - r: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(r,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 512, 'className': "Sutl", 'methodName': "logexit"}))
+			haxe_Log.trace(((("(" + Std.string(h)) + "): ") + ("null" if msg is None else msg)),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 546, 'className': "Sutl", 'methodName': "logexit"}))
+			haxe_Log.trace((" - r: " + HxOverrides.stringOrNull(haxe_format_JsonPrinter.print(r,None,"  "))),_hx_AnonObject({'fileName': "Sutl.hx", 'lineNumber': 547, 'className': "Sutl", 'methodName': "logexit"}))
 
 	def evaluate(self,src,tt,l,h = 0):
 		if (h is None):
@@ -3204,8 +3225,8 @@ class haxe_unit_TestRunner:
 		while (_g_head is not None):
 			c = None
 			def _hx_local_0():
-				nonlocal _g_val
 				nonlocal _g_head
+				nonlocal _g_val
 				_g_val = (_g_head[0] if 0 < len(_g_head) else None)
 				_g_head = (_g_head[1] if 1 < len(_g_head) else None)
 				return _g_val
